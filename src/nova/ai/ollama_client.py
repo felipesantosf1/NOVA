@@ -3,18 +3,14 @@ from ollama import Client, ResponseError
 
 from nova.config import OLLAMA_HOST, OLLAMA_MODEL
 
-
 class AIError(Exception):
     """Erro geral relacionado à inteligência artificial."""
-
 
 class AIConnectionError(AIError):
     """Erro de comunicação com o serviço de IA."""
 
-
 class AIResponseError(AIError):
     """Erro ao solicitar ou receber uma resposta da IA."""
-
 
 class OllamaClient:
     def __init__(self) -> None:
@@ -29,6 +25,13 @@ class OllamaClient:
                 model=OLLAMA_MODEL,
                 messages=messages,
             )
+
+        except ConnectionError as exc:
+            raise AIConnectionError(
+                "Não foi possível conectar ao Ollama. "
+                f"Endereço configurado: {OLLAMA_HOST}. "
+                "Verifique se o serviço está acessível."
+            ) from exc
 
         except ResponseError as exc:
             if exc.status_code == 404:
@@ -45,10 +48,16 @@ class OllamaClient:
 
         except HTTPError as exc:
             raise AIConnectionError(
-                "Não foi possível estabelecer a comunicação "
-                "com o serviço do Ollama."
+                "Ocorreu um erro de comunicação com o serviço de IA."
             ) from exc
 
+        except ConnectionError as exc:
+            raise AIConnectionError(
+                "Não foi possível estabelecer a comunicação "
+                "com o serviço do Ollama. "
+                "Verifique se ele está em execução."
+            ) from exc
+        
         content = response.message.content
 
         if not content or not content.strip():
