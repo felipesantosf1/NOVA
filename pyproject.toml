@@ -4,9 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nova-assistant"
-version = "0.1.0"
+version = "0.2.0"
 description = "Assistente virtual pessoal com IA local e memória persistente"
 requires-python = ">=3.11"
+dependencies = [
+    "ollama>=0.6.3",
+    "httpx>=0.27.0",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
