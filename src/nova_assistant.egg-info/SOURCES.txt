@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+src/nova/__init__.py
+src/nova/__main__.py
+src/nova/assistant.py
+src/nova/config.py
+src/nova_assistant.egg-info/PKG-INFO
+src/nova_assistant.egg-info/SOURCES.txt
+src/nova_assistant.egg-info/dependency_links.txt
+src/nova_assistant.egg-info/top_level.txt

@@ -1,0 +1,5 @@
+Metadata-Version: 2.4
+Name: nova-assistant
+Version: 0.1.0
+Summary: Assistente virtual pessoal com IA local e memória persistente
+Requires-Python: >=3.11
