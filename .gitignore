@@ -1,8 +1,15 @@
+# Python / Cache
 __pycache__/
 *.pyc
-.vscode/
+.pytest_cache/
 
+# Ambiente e Configurações locais
 .venv
 .env
 
-tests
+# Dados locais (bancos de dados, etc)
+data/
+
+# IDE e Empacotamento
+.vscode/
+nova_assistant.egg-info
