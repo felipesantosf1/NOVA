@@ -1,5 +1,7 @@
+from pathlib import Path
+
 APP_NAME = "NOVA"
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 
 # Configuração da integração com o modelo de IA.
 OLLAMA_HOST = "http://localhost:11434"
@@ -7,6 +9,11 @@ OLLAMA_MODEL = "gemma4"
 
 # Número máximo de mensagens anteriores mantidas no contexto.
 MAX_HISTORY_MESSAGES = 20
+
+# .gitignore, então suas conversas pessoais não vão pro GitHub.
+DATA_DIR = Path(__file__).resolve().parents[2] / "data"
+HISTORY_FILE = DATA_DIR / "history.json"  # conversa recente
+FACTS_FILE = DATA_DIR / "facts.json"      # coisas que você pediu pra ela lembrar
 
 SYSTEM_PROMPT = """
 Você é a NOVA, uma assistente virtual pessoal.
