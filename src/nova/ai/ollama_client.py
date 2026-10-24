@@ -46,6 +46,13 @@ class OllamaClient:
                 f"O serviço de IA retornou um erro: {detail}"
             ) from exc
 
+        except ConnectionError as exc:
+            raise AIConnectionError(
+                "Não foi possível estabelecer a comunicação "
+                "com o serviço do Ollama. "
+                "Verifique se ele está em execução."
+            ) from exc
+
         except HTTPError as exc:
             raise AIConnectionError(
                 "Ocorreu um erro de comunicação com o serviço de IA."
