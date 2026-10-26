@@ -1,5 +1,6 @@
 
 [build-system]
+# Ferramenta usada para "montar" o projeto na hora da instalação.
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
@@ -8,6 +9,8 @@ name = "nova-assistant"
 version = "0.2.0"
 description = "Assistente virtual pessoal com IA local e memória persistente"
 requires-python = ">=3.11"
+
+# Bibliotecas de que a NOVA precisa.
 dependencies = [
     "ollama>=0.6.3",
     "httpx>=0.27.0",
@@ -15,10 +18,12 @@ dependencies = [
     "python-dotenv>=1.0",
 ]
 
+# Dependências só para DESENVOLVER
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0",
 ]
 
+# Diz ao setuptools onde está o código: dentro da pasta src/.
 [tool.setuptools.packages.find]
 where = ["src"]
