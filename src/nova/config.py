@@ -3,8 +3,9 @@ from pathlib import Path
 APP_NAME = "NOVA"
 VERSION = "0.3.0"
 
-# Configuração da integração com o modelo de IA.
+# Endereço onde o Ollama está rodando.
 OLLAMA_HOST = "http://localhost:11434"
+# Nome do modelo.
 OLLAMA_MODEL = "gemma4"
 
 # Número máximo de mensagens anteriores mantidas no contexto.
@@ -15,6 +16,7 @@ DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 HISTORY_FILE = DATA_DIR / "history.json"  # conversa recente
 FACTS_FILE = DATA_DIR / "facts.json"      # coisas que você pediu pra ela lembrar
 
+# conversa. É ele que define o jeito de ser da NOVA.
 SYSTEM_PROMPT = """
 Você é a NOVA, uma assistente virtual pessoal.
 

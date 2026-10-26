@@ -4,15 +4,20 @@ from pathlib import Path
 # Lê uma lista salva em um arquivo JSON.
 def load_list(path: Path) -> list:
 
+    # Primeira vez rodando: ainda não há arquivo, então não há nada a ler.
     if not path.exists():
         return []
 
     try:
         with path.open("r", encoding="utf-8") as file:
             data = json.load(file)
+
+    # O arquivo existe, mas o conteúdo não é um JSON válido.# O arquivo existe, mas o conteúdo não é um JSON válido.
     except json.JSONDecodeError:
         path.replace(path.with_suffix(".corrompido"))
         return []
+
+    # Não foi possível ler o arquivo (por exemplo, sem permissão).
     except OSError:
         return []
 
@@ -36,12 +41,14 @@ def save_list(path: Path, data: list) -> None:
 # Guarda duas coisas, ambas salvas em disco "history" últimas mensagens e facts "coisas que você pediu para ela lembrar"
 class Memory:
 
+    # Roda ao criar uma Memory.
     def __init__(
         self,
         history_file: Path,
         facts_file: Path,
         max_history: int,
     ) -> None:
+        # Carrega o que já estava salvo, descartando itens malformados.
         self._history_file = history_file
         self._facts_file = facts_file
         self._max_history = max_history
@@ -59,6 +66,7 @@ class Memory:
                     "content": item["content"],
                 })
 
+        # Fatos: só mantém o que for texto.
         self.facts: list[str] = [
             fact for fact in load_list(facts_file)
             if isinstance(fact, str)
@@ -75,13 +83,15 @@ class Memory:
 
         save_list(self._history_file, self.history)
 
+    # Apaga a conversa (só o histórico; os fatos continuam guardados).
     def clear_history(self) -> None:
         self.history.clear()
         save_list(self._history_file, self.history)
 
     # Guarda um fato. Devolve False se ele já existia.
     def add_fact(self, fact: str) -> bool:
-    
+
+        # casefold() ignora maiúsculas/minúsculas ao comparar
         already_saved = any(
             fact.casefold() == saved.casefold() for saved in self.facts
         )

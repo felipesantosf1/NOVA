@@ -5,24 +5,24 @@ from ollama import Client, ResponseError
 
 from nova.config import OLLAMA_HOST, OLLAMA_MODEL
 
-
+# Erro geral relacionado à inteligência artificial.
 class AIError(Exception):
-    """Erro geral relacionado à inteligência artificial."""
+    pass
 
-
+# Erro de comunicação com o serviço de IA.
 class AIConnectionError(AIError):
-    """Erro de comunicação com o serviço de IA."""
+    pass
 
-
+# Erro ao solicitar ou receber uma resposta da IA.
 class AIResponseError(AIError):
-    """Erro ao solicitar ou receber uma resposta da IA."""
+    pass
 
 
 class OllamaClient:
     def __init__(self) -> None:
-        self._client = Client(host=OLLAMA_HOST)
+        self._client = Client(host=OLLAMA_HOST) # Cria a "conexão" com o Ollama.
 
-    # Envia a conversa para a IA e devolve a resposta aos poucos.
+    # É isso que cria o efeito de a resposta ser "digitada" na tela.
     def stream_response(
         self,
         messages: list[dict[str, str]],
@@ -45,6 +45,7 @@ class OllamaClient:
                     yield piece
 
         except ConnectionError as exc:
+            # O Ollama está desligado ou o endereço está errado.
             raise AIConnectionError(
                 "Não foi possível conectar ao Ollama. "
                 f"Endereço configurado: {OLLAMA_HOST}. "
@@ -52,12 +53,14 @@ class OllamaClient:
             ) from exc
 
         except ResponseError as exc:
+            # O Ollama respondeu, mas com um erro.
             if exc.status_code == 404:
                 raise AIResponseError(
                     f"Modelo '{OLLAMA_MODEL}' não encontrado. "
                     "Confira o nome configurado em config.py."
                 ) from exc
 
+            # Para os outros erros, mostramos o detalhe que o Ollama informou.
             detail = exc.error or "Erro sem detalhes."
 
             raise AIResponseError(
@@ -65,6 +68,7 @@ class OllamaClient:
             ) from exc
 
         except HTTPError as exc:
+            # Qualquer outro problema de rede (queda, tempo esgotado etc.).
             raise AIConnectionError(
                 "Ocorreu um erro de comunicação com o serviço de IA."
             ) from exc
